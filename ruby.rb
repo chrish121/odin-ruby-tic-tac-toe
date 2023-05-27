@@ -44,18 +44,22 @@ class Board
       first_turn_answer = gets.chomp.strip
     end
     if first_turn_answer.downcase == Player_One.name.downcase
-      @first_turn_player = Player_One.name
+      @first_turn_player = Player_One
+      @first_turn_player_name = Player_One.name
     elsif first_turn_answer.downcase == Player_Two.name.downcase
-      @first_turn_player = Player_Two.name
+      @first_turn_player = Player_Two
+      @first_turn_player_name = Player_Two.name
     elsif first_turn_answer.downcase == "random"
       random_number = Random.new.rand(1..10)
       if random_number.odd?
-        @first_turn_player = Player_One.name
+        @first_turn_player = Player_One
+        @first_turn_player_name = Player_One.name
       else
-        @first_turn_player = Player_Two.name
+        @first_turn_player = Player_Two
+        @first_turn_player_name = Player_Two.name
       end
     end
-    puts "#{@first_turn_player} plays first."
+    puts "#{@first_turn_player_name} plays first."
   end
 
   def self.show_board
@@ -63,28 +67,37 @@ class Board
     puts @current_board
   end
 
-  def self.ask_for_move
-    puts "#{@first_turn_player}, pick a number on the tic-tac-toe board for your turn."
+  def self.ask_for_move(which_player)
+    puts "#{which_player.name}, pick a number on the tic-tac-toe board for your turn."
     @move = gets.chomp.strip.to_i
     until @move > 0 && @move < 10
-      puts "Invalid. #{@first_turn_player}, pick a number on the tic-tac-toe board for your turn."
+      puts "Invalid. #{which_player.name}, pick a number on the tic-tac-toe board for your turn."
       @move = gets.chomp.strip.to_i
     end
   end
 
-  def self.change_board
-    @new_board = @current_board.sub("#{@move.to_s}", "#{Player_One.symbol}")
+  def self.change_board(which_player)
+    @new_board = @current_board.sub("#{@move.to_s}", "#{(which_player).symbol}")
     puts @new_board
     @current_board = @new_board
   end
 
   def self.game
     winner = "none"
-    Board.ask_for_move
-    Board.change_board
+    Board.ask_for_move(@first_turn_player)
+    Board.change_board(@first_turn_player)
     until winner == "yes"
-      Board.ask_for_move
-      Board.change_board
+      if @first_turn_player == Player_One
+        Board.ask_for_move(Player_Two)
+        Board.change_board(Player_Two)
+        Board.ask_for_move(Player_One)
+        Board.change_board(Player_One)
+      elsif @first_turn_player == Player_Two
+        Board.ask_for_move(Player_One)
+        Board.change_board(Player_One)
+        Board.ask_for_move(Player_Two)
+        Board.change_board(Player_Two)
+      end
     end
   end
 end
