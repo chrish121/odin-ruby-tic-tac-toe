@@ -70,8 +70,8 @@ class Board
   def self.ask_for_move(which_player)
     puts "#{which_player.name}, pick a number on the tic-tac-toe board for your turn."
     @move = gets.chomp.strip.to_i
-    until @move > 0 && @move < 10
-      puts "Invalid. #{which_player.name}, pick a number on the tic-tac-toe board for your turn."
+    until (@move > 0 && @move < 10) && (@current_board.include?(@move.to_s))
+      puts "Invalid. Pick another number for your turn"
       @move = gets.chomp.strip.to_i
     end
   end
