@@ -33,7 +33,7 @@ end
 class Player_Two < Player
 end
 
-class Questions
+class Board
   def self.first_turn
     puts "Who plays first? #{Player_One.name}, #{Player_Two.name}, or random?"
     first_turn_answer = gets.chomp.strip
@@ -58,21 +58,27 @@ class Questions
     puts "#{@first_turn_player} plays first."
   end
 
+  def self.show_board
+    @current_board = "  1  |  2  |  3  \n ---------------\n  4  |  5  |  6  \n ---------------\n  7  |  8  |  9  "
+    puts @current_board
+  end
+
   def self.ask_for_move
     puts "#{@first_turn_player}, pick a number on the tic-tac-toe board for your turn."
-    move = gets.chomp.strip.to_i
-    puts move
+    @move = gets.chomp.strip.to_i
+    puts @move
   end
-end
 
-class Board
-  def self.show_board
-    puts "  1  |  2  |  3  \n ---------------\n  4  |  5  |  6  \n ---------------\n  7  |  8  |  9  "
+  def self.change_board
+    new_board = @current_board.sub("#{@move.to_s}", "#{Player_One.symbol}")
+    puts new_board
+    @current_board = new_board
   end
 end
 
 Board.show_board
 Player_One.start("Player 1")
 Player_Two.start("Player 2")
-Questions.first_turn
-Questions.ask_for_move
+Board.first_turn
+Board.ask_for_move
+Board.change_board
