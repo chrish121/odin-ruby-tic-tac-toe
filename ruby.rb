@@ -44,24 +44,30 @@ class Questions
       first_turn_answer = gets.chomp.strip
     end
     if first_turn_answer.downcase == Player_One.name.downcase
-      first_turn_player = Player_One.name
+      @first_turn_player = Player_One.name
     elsif first_turn_answer.downcase == Player_Two.name.downcase
-      first_turn_player = Player_Two.name
+      @first_turn_player = Player_Two.name
     elsif first_turn_answer.downcase == "random"
       random_number = Random.new.rand(1..10)
       if random_number.odd?
-        first_turn_player = Player_One.name
+        @first_turn_player = Player_One.name
       else
-        first_turn_player = Player_Two.name
+        @first_turn_player = Player_Two.name
       end
     end
-    puts "#{first_turn_player} plays first."
+    puts "#{@first_turn_player} plays first."
+  end
+
+  def self.ask_for_move
+    puts "#{@first_turn_player}, pick a number on the tic-tac-toe board for your turn."
+    move = gets.chomp.strip.to_i
+    puts move
   end
 end
 
 class Board
   def self.show_board
-    puts "  1  |  2  |  3  \n ----------------\n  4  |  5  |  6  \n ----------------\n  7  |  8  |  9  "
+    puts "  1  |  2  |  3  \n ---------------\n  4  |  5  |  6  \n ---------------\n  7  |  8  |  9  "
   end
 end
 
@@ -69,3 +75,4 @@ Board.show_board
 Player_One.start("Player 1")
 Player_Two.start("Player 2")
 Questions.first_turn
+Questions.ask_for_move
