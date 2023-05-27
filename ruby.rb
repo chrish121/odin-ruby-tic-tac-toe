@@ -59,6 +59,13 @@ class Questions
   end
 end
 
+class Board
+  def self.show_board
+    puts "  1  |  2  |  3  \n ----------------\n  4  |  5  |  6  \n ----------------\n  7  |  8  |  9  "
+  end
+end
+
+Board.show_board
 Player_One.start("Player 1")
 Player_Two.start("Player 2")
 Questions.first_turn
