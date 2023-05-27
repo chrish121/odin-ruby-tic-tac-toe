@@ -66,13 +66,26 @@ class Board
   def self.ask_for_move
     puts "#{@first_turn_player}, pick a number on the tic-tac-toe board for your turn."
     @move = gets.chomp.strip.to_i
-    puts @move
+    until @move > 0 && @move < 10
+      puts "Invalid. #{@first_turn_player}, pick a number on the tic-tac-toe board for your turn."
+      @move = gets.chomp.strip.to_i
+    end
   end
 
   def self.change_board
-    new_board = @current_board.sub("#{@move.to_s}", "#{Player_One.symbol}")
-    puts new_board
-    @current_board = new_board
+    @new_board = @current_board.sub("#{@move.to_s}", "#{Player_One.symbol}")
+    puts @new_board
+    @current_board = @new_board
+  end
+
+  def self.game
+    winner = "none"
+    Board.ask_for_move
+    Board.change_board
+    until winner == "yes"
+      Board.ask_for_move
+      Board.change_board
+    end
   end
 end
 
@@ -80,5 +93,4 @@ Board.show_board
 Player_One.start("Player 1")
 Player_Two.start("Player 2")
 Board.first_turn
-Board.ask_for_move
-Board.change_board
+Board.game
