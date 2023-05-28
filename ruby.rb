@@ -98,28 +98,37 @@ class Board
         puts "#{player.name} is the winner!"
         @winner = "yes"
         return "#{player.name} is the winner!"
+      elsif @winner == "none" && @current_board.match?(/[[:digit:]]/) == false
+        puts "It's a draw!"
+        @winner = "neither"
+        return "It's a draw!"
       end
     end
   end
 
+
   def self.game
     Board.ask_for_move(@first_turn_player)
     Board.change_board(@first_turn_player)
-    until @winner == "yes"
+    until @winner == "yes" || @winner == "neither"
       if @first_turn_player == Player_One
         Board.ask_for_move(Player_Two)
         Board.change_board(Player_Two)
         Board.check_for_winner(Player_One, Player_Two)
-        Board.ask_for_move(Player_One)
-        Board.change_board(Player_One)
-        Board.check_for_winner(Player_One, Player_Two)
+        if @winner == "none"
+          Board.ask_for_move(Player_One)
+          Board.change_board(Player_One)
+          Board.check_for_winner(Player_One, Player_Two)
+        end
       elsif @first_turn_player == Player_Two
         Board.ask_for_move(Player_One)
         Board.change_board(Player_One)
         Board.check_for_winner(Player_One, Player_Two)
-        Board.ask_for_move(Player_Two)
-        Board.change_board(Player_Two)
-        Board.check_for_winner(Player_One, Player_Two)
+        if @winner == "none"
+          Board.ask_for_move(Player_Two)
+          Board.change_board(Player_Two)
+          Board.check_for_winner(Player_One, Player_Two)
+        end
       end
     end
   end
