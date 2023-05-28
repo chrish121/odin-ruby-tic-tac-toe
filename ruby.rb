@@ -5,10 +5,22 @@ class Player
   def self.start(player_name)
     puts "#{player_name}, what is your name?"
     @name = gets.chomp.strip
+    check_name(@name)
     puts "#{player_name}, what do you want to use? Enter only 1 letter or symbol."
     preferred_symbol = gets.chomp.strip
     check_symbol(preferred_symbol)
     @symbol = @new_symbol.to_s
+  end
+
+  def self.check_name(name_input)
+    if !PlayerTwo.name
+      @name = name_input
+    else
+      until @name != PlayerOne.name
+        puts "Invalid. #{PlayerOne.name} has been taken. Try again."
+        @name = gets.chomp.strip
+      end
+    end
   end
 
   def self.check_symbol(symbol_input)
@@ -17,7 +29,7 @@ class Player
       if !PlayerOne.symbol
         puts 'Invalid. Try again. Enter only 1 letter or symbol.'
       else
-        puts "Invalid. Try again. #{PlayerOne.symbol} has been taken by #{PlayerOne.name}."
+        puts "Invalid. #{PlayerOne.symbol} has been taken by #{PlayerOne.name}. Try again."
       end
       symbol_input = gets.chomp.strip
     end
