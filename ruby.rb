@@ -34,6 +34,8 @@ class Player_Two < Player
 end
 
 class Board
+  @winner = "none"
+
   def self.first_turn
     puts "Who plays first? #{Player_One.name}, #{Player_Two.name}, or random?"
     first_turn_answer = gets.chomp.strip
@@ -82,21 +84,42 @@ class Board
     @current_board = @new_board
   end
 
+  def self.check_for_winner(which_player_one, which_player_two)
+    players = [which_player_one, which_player_two]
+    players.each do |player|
+      if player.symbol == @current_board[2] && player.symbol == @current_board[8] && player.symbol == @current_board[14] ||
+        player.symbol == @current_board[37] && player.symbol == @current_board[43] && player.symbol == @current_board[49] ||
+        player.symbol == @current_board[72] && player.symbol == @current_board[78] && player.symbol == @current_board[84] ||
+        player.symbol == @current_board[2] && player.symbol == @current_board[37] && player.symbol == @current_board[72] ||
+        player.symbol == @current_board[8] && player.symbol == @current_board[43] && player.symbol == @current_board[78] ||
+        player.symbol == @current_board[14] && player.symbol == @current_board[49] && player.symbol == @current_board[84] ||
+        player.symbol == @current_board[2] && player.symbol == @current_board[43] && player.symbol == @current_board[84] ||
+        player.symbol == @current_board[72] && player.symbol == @current_board[43] && player.symbol == @current_board[14]
+        puts "#{player.name} is the winner!"
+        @winner = "yes"
+        return "#{player.name} is the winner!"
+      end
+    end
+  end
+
   def self.game
-    winner = "none"
     Board.ask_for_move(@first_turn_player)
     Board.change_board(@first_turn_player)
-    until winner == "yes"
+    until @winner == "yes"
       if @first_turn_player == Player_One
         Board.ask_for_move(Player_Two)
         Board.change_board(Player_Two)
+        Board.check_for_winner(Player_One, Player_Two)
         Board.ask_for_move(Player_One)
         Board.change_board(Player_One)
+        Board.check_for_winner(Player_One, Player_Two)
       elsif @first_turn_player == Player_Two
         Board.ask_for_move(Player_One)
         Board.change_board(Player_One)
+        Board.check_for_winner(Player_One, Player_Two)
         Board.ask_for_move(Player_Two)
         Board.change_board(Player_Two)
+        Board.check_for_winner(Player_One, Player_Two)
       end
     end
   end
