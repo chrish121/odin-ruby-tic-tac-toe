@@ -4,8 +4,8 @@ class Player
     @name = gets.chomp.strip
     puts "#{player_name}, what do you want to use? Enter only 1 letter or symbol."
     preferred_symbol = gets.chomp.strip
-    if preferred_symbol.length != 1 || preferred_symbol == Player_One.symbol
-      until preferred_symbol.length == 1 && preferred_symbol != Player_One.symbol
+    if preferred_symbol.length != 1 || preferred_symbol == Player_One.symbol || preferred_symbol.match?(/[[:digit:]]/) == true
+      until preferred_symbol.length == 1 && preferred_symbol != Player_One.symbol && preferred_symbol.match?(/[[:digit:]]/) == false
         if !Player_One.symbol
           puts "Invalid. Try again. Enter only 1 letter or symbol."
           preferred_symbol = gets.chomp.strip
